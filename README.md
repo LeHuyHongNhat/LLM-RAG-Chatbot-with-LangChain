@@ -149,7 +149,7 @@ Mọi đóng góp đều được chào đón! Quy trình đóng góp:
 
 ## 📝 License
 
-Distributed under the MIT License. See [`LICENSE`](LICENSE) for more information.
+Distributed under the MIT License. See [`[LICENSE](https://github.com/LeHuyHongNhat/LLM-RAG-Chatbot-with-LangChain/tree/master?tab=MIT-1-ov-file)`](LICENSE) for more information.
 
 ## 📧 Liên hệ
 

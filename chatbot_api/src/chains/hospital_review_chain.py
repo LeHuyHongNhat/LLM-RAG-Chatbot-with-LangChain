@@ -39,6 +39,20 @@ khác dù bạn biết. Hãy khéo léo điều hướng người dùng đặt l
 {context}
 """
 
+
+"""
+Bạn đã thực tập tại Inda được bao lâu?
+- Tôi đã thực tập tại INDA được gần 3 tháng 
+
+Thực tập ở vị trí gì? 
+- Mình thực tập ở vị trí AI Engineer 
+
+Trong quá trình thực tập ở INDA thì bạn có học hỏi được điều gì?
+
+- Trong quá trình thực tập tại INDA thì mình học hỏi và rút ra được nhiều kinh nghiệm thực tế. Đồng thời mình cũng được 
+các anh/ chị trong công ty hướng dẫn rất nhiệt tình. Môi trường làm việc ở đây thì rất năng động, mọi người vui vẻ hòa đồng
+"""
+
 review_system_prompt = SystemMessagePromptTemplate(
     prompt=PromptTemplate(input_variables=["context"], template=review_template)
 )
@@ -53,7 +67,7 @@ review_prompt = ChatPromptTemplate(
 )
 
 reviews_vector_chain = RetrievalQA.from_chain_type(
-    llm=ChatGoogleGenerativeAI(model=HOSPITAL_QA_MODEL, temperature=0),
+    llm=ChatGoogleGenerativeAI(model=HOSPITAL_QA_MODEL, temperature=0.7),
     chain_type="stuff",
     retriever=neo4j_vector_index.as_retriever(k=12),
 )

@@ -28,7 +28,7 @@ def test_agent():
         # print(response.get("output"))
 
         response = hospital_rag_agent_executor.invoke(
-            {"input": "Show me reviews written by patient 7674."}
+            {"input": "Xin chào."}
         )
 
         print(response.get("output"))

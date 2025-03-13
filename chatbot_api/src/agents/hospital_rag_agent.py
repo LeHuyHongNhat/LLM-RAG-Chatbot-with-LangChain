@@ -5,6 +5,7 @@ from langchain.agents import (
     Tool,
     AgentExecutor,
 )
+from langsmith import Client
 from langchain import hub
 from chatbot_api.src.chains.hospital_review_chain import reviews_vector_chain
 from chatbot_api.src.chains.hospital_cypher_chain import hospital_cypher_chain
@@ -14,8 +15,8 @@ from chatbot_api.src.tools.wait_times import (
 )
 
 HOSPITAL_AGENT_MODEL = os.getenv("HOSPITAL_AGENT_MODEL")
-
-hospital_agent_prompt = hub.pull("hwchase17/openai-functions-agent")
+client = Client(api_key="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")
+hospital_agent_prompt = client.pull_prompt("hwchase17/openai-functions-agent", include_model=True)
 
 tools = [
     Tool(
@@ -24,7 +25,7 @@ tools = [
         description="""Hữu ích khi bạn cần trả lời các câu hỏi về trải nghiệm, cảm xúc của bệnh nhân hoặc bất kỳ câu 
         hỏi định tính nào khác có thể được trả lời về bệnh nhân bằng cách sử dụng tìm kiếm ngữ nghĩa. Không hữu ích 
         khi trả lời các câu hỏi khách quan liên quan đến việc đếm, phần trăm, tổng hợp hoặc liệt kê các sự kiện. Sử 
-        dụngtoàn bộ lời nhắc làm đầu vào cho công cụ. Ví dụ, nếu lời nhắc là "Bệnh nhân có hài lòng với dịch vụ chăm 
+        dụng toàn bộ lời nhắc làm đầu vào cho công cụ. Ví dụ, nếu lời nhắc là "Bệnh nhân có hài lòng với dịch vụ chăm 
         sóc của họ không?", đầu vào phải là "Bệnh nhân có hài lòng với dịch vụ chăm sóc của họ không?". 
         """
     ),
@@ -58,7 +59,7 @@ tools = [
 
 chat_model = ChatGoogleGenerativeAI(
     model=HOSPITAL_AGENT_MODEL,
-    temperature=0,
+    temperature=0.7,
 )
 
 hospital_rag_agent = create_tool_calling_agent(

@@ -2,7 +2,7 @@ import os
 import requests
 import streamlit as st
 
-CHATBOT_URL = os.getenv("CHATBOT_URL", "http://localhost:8000/hospital-rag-agent")
+CHATBOT_URL = os.getenv("CHATBOT_URL", "http://127.0.0.1:8000/hospital-rag-agent")
 
 # Khởi tạo session state
 if "messages" not in st.session_state:

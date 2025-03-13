@@ -147,8 +147,8 @@ qa_generation_prompt = PromptTemplate(
 )
 
 hospital_cypher_chain = GraphCypherQAChain.from_llm(
-    cypher_llm=ChatGoogleGenerativeAI(model=HOSPITAL_CYPHER_MODEL, temperature=0),
-    qa_llm=ChatGoogleGenerativeAI(model=HOSPITAL_QA_MODEL, temperature=0),
+    cypher_llm=ChatGoogleGenerativeAI(model=HOSPITAL_CYPHER_MODEL, temperature=0.7),
+    qa_llm=ChatGoogleGenerativeAI(model=HOSPITAL_QA_MODEL, temperature=0.7),
     graph=graph,
     verbose=True,
     qa_prompt=qa_generation_prompt,

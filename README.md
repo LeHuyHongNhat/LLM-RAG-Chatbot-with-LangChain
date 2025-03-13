@@ -97,8 +97,7 @@ cp .env.example .env
 
 ```bash
 # Terminal 1 - Backend
-cd chatbot_api
-uvicorn src.main:app --reload --port 8000
+uvicorn chatbot_api.src.main:app --reload --port 8000
 
 # Terminal 2 - Frontend
 cd chatbot_frontend

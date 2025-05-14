@@ -1,28 +1,48 @@
-version: '3'
+version: "3.8"
 
 services:
-  hospital_neo4j_etl:
+  etl:
     build:
       context: ./hospital_neo4j_etl
+      dockerfile: Dockerfile
     env_file:
       - .env
+    networks:
+      - app-network
+    depends_on:
+      - api
 
-  chatbot_api:
+  api:
     build:
       context: ./chatbot_api
+      dockerfile: Dockerfile
     env_file:
       - .env
-    depends_on:
-      - hospital_neo4j_etl
     ports:
       - "8000:8000"
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
 
-  chatbot_frontend:
+  frontend:
     build:
       context: ./chatbot_frontend
+      dockerfile: Dockerfile
     env_file:
       - .env
-    depends_on:
-      - chatbot_api
     ports:
       - "8501:8501"
+    networks:
+      - app-network
+    depends_on:
+      - api
+    environment:
+      - CHATBOT_URL=http://api:8000/hospital-rag-agent
+
+networks:
+  app-network:
+    driver: bridge

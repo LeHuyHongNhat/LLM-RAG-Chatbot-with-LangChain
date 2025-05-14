@@ -1,10 +1,21 @@
+# Use Python 3.11 as base image
 FROM python:3.11-slim
 
+# Set working directory
 WORKDIR /app
 
-COPY ./src/ /app
+# Copy project files
+COPY pyproject.toml .
+COPY src/ ./src/
 
-COPY ./pyproject.toml /code/pyproject.toml
-RUN pip install /code/.
+# Install dependencies
+RUN pip install --no-cache-dir .
 
-CMD ["sh", "entrypoint.sh"]
+# Expose port for Streamlit
+EXPOSE 8501
+
+# Set Python specific environment
+ENV PYTHONPATH=/app
+ENV PYTHONUNBUFFERED=1
+
+CMD ["streamlit", "run", "src/main.py", "--server.address", "0.0.0.0", "--server.port", "8501"]

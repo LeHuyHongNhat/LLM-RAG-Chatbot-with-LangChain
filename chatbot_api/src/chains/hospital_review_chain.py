@@ -2,7 +2,7 @@ import os
 
 from dotenv import load_dotenv
 from langchain_community.vectorstores import Neo4jVector
-from langchain_google_genai import GoogleGenerativeAIEmbeddings, ChatGoogleGenerativeAI
+from langchain_openai import OpenAIEmbeddings, ChatOpenAI
 from langchain.chains import RetrievalQA
 from langchain.prompts import (
     PromptTemplate,
@@ -16,7 +16,7 @@ load_dotenv()
 HOSPITAL_QA_MODEL = os.getenv("HOSPITAL_QA_MODEL")
 
 neo4j_vector_index = Neo4jVector.from_existing_graph(
-    embedding=GoogleGenerativeAIEmbeddings(model="models/text-embedding-004"),
+    embedding=OpenAIEmbeddings(model="text-embedding-3-small"),
     url=os.getenv("NEO4J_URI"),
     username=os.getenv("NEO4J_USERNAME"),
     password=os.getenv("NEO4J_PASSWORD"),
@@ -53,7 +53,7 @@ review_prompt = ChatPromptTemplate(
 )
 
 reviews_vector_chain = RetrievalQA.from_chain_type(
-    llm=ChatGoogleGenerativeAI(model=HOSPITAL_QA_MODEL, temperature=0.7),
+    llm=ChatOpenAI(model=HOSPITAL_QA_MODEL, temperature=0),
     chain_type="stuff",
     retriever=neo4j_vector_index.as_retriever(k=12),
 )

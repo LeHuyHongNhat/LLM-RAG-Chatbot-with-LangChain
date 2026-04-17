@@ -39,7 +39,9 @@ async def lifespan(app: FastAPI):
         logger.info("✅ Connected to Redis successfully")
     except Exception as e:
         logger.error(f"❌ Failed to connect to Redis on startup: {e}")
-        # We start even if Redis is down (fail-open) but _is_ready remains False
+        logger.info("⚠️ Falling back to In-Memory security storage")
+        # Set _is_ready to True anyway because we have Memory Fallback
+        _is_ready = True
     
     yield
     

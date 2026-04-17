@@ -1,7 +1,7 @@
 from fastapi import FastAPI
-from chatbot_api.src.agents.hospital_rag_agent import hospital_rag_agent_executor
-from chatbot_api.src.models.hospital_rag_query import HospitalQueryInput, HospitalQueryOutput
-from chatbot_api.src.utils.async_utils import async_retry
+from src.agents.hospital_rag_agent import hospital_rag_agent_executor
+from src.models.hospital_rag_query import HospitalQueryInput, HospitalQueryOutput
+from src.utils.async_utils import async_retry
 
 app = FastAPI(
     title="Hospital Chatbot",
@@ -21,6 +21,11 @@ async def invoke_agent_with_retry(query: str):
 @app.get("/")
 async def get_status():
     return {"status": "running"}
+
+
+@app.get("/health")
+async def health_check():
+    return {"status": "healthy"}
 
 
 @app.post("/hospital-rag-agent")

@@ -5,9 +5,13 @@ dependencies = [
     "asyncio==3.4.3",
     "fastapi==0.115.4",
     "langchain==0.3.7",
+    "langchain-community==0.3.7",
+    "langchain-google-genai==2.0.7",
+    "langsmith==0.1.147",
     "neo4j==5.26.0",
     "numpy==1.26.4",
     "pydantic==2.9.2",
+    "python-dotenv==1.0.1",
     "uvicorn==0.32.0"
 ]
 

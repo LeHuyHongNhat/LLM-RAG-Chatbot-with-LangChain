@@ -7,16 +7,17 @@ from langchain.agents import (
 )
 from langsmith import Client
 from langchain import hub
-from chatbot_api.src.chains.hospital_review_chain import reviews_vector_chain
-from chatbot_api.src.chains.hospital_cypher_chain import hospital_cypher_chain
-from chatbot_api.src.tools.wait_times import (
+from src.chains.hospital_review_chain import reviews_vector_chain
+from src.chains.hospital_cypher_chain import hospital_cypher_chain
+from src.tools.wait_times import (
     get_current_wait_times,
     get_most_available_hospital,
 )
 
 HOSPITAL_AGENT_MODEL = os.getenv("HOSPITAL_AGENT_MODEL")
-client = Client(api_key="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")
-hospital_agent_prompt = client.pull_prompt("hwchase17/openai-functions-agent", include_model=True)
+LANGSMITH_API_KEY = os.getenv("LANGSMITH_API_KEY", "")
+client = Client(api_key=LANGSMITH_API_KEY) if LANGSMITH_API_KEY else None
+hospital_agent_prompt = hub.pull("hwchase17/openai-functions-agent")
 
 tools = [
     Tool(

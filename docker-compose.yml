@@ -9,8 +9,7 @@ services:
       - .env
     networks:
       - app-network
-    depends_on:
-      - api
+    restart: "no"
 
   api:
     build:

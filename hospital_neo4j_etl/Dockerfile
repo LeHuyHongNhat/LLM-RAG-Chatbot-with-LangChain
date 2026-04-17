@@ -1,28 +1,30 @@
-# Use Python 3.11 as base image
-FROM python:3.11-slim
+# ==========================================
+# STAGE 1: Builder
+# ==========================================
+FROM python:3.11-slim AS builder
 
-# Set working directory
-WORKDIR /app
+WORKDIR /build
 
-# Install system dependencies
 RUN apt-get update && apt-get install -y \
     build-essential \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy project files
 COPY pyproject.toml .
+RUN pip install --no-cache-dir --prefix=/install .
+
+# ==========================================
+# STAGE 2: Final Image
+# ==========================================
+FROM python:3.11-slim
+
+WORKDIR /app
+
+COPY --from=builder /install /usr/local
 COPY src/ ./src/
 COPY entrypoint.sh .
-
-# Make entrypoint script executable
 RUN chmod +x entrypoint.sh
 
-# Install dependencies
-RUN pip install --no-cache-dir .
-
-# Set Python specific environment
 ENV PYTHONPATH=/app
 ENV PYTHONUNBUFFERED=1
 
-# Command to run the ETL script
 CMD ["./entrypoint.sh"]

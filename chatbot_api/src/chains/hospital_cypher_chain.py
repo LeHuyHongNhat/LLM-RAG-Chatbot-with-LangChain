@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 from langchain_community.graphs import Neo4jGraph
 from langchain.chains import GraphCypherQAChain
 from langchain.prompts import PromptTemplate
-from langchain_google_genai import ChatGoogleGenerativeAI
+from langchain_openai import ChatOpenAI
 
 load_dotenv()
 HOSPITAL_QA_MODEL = os.getenv("HOSPITAL_QA_MODEL")
@@ -147,8 +147,8 @@ qa_generation_prompt = PromptTemplate(
 )
 
 hospital_cypher_chain = GraphCypherQAChain.from_llm(
-    cypher_llm=ChatGoogleGenerativeAI(model=HOSPITAL_CYPHER_MODEL, temperature=0.7),
-    qa_llm=ChatGoogleGenerativeAI(model=HOSPITAL_QA_MODEL, temperature=0.7),
+    cypher_llm=ChatOpenAI(model=HOSPITAL_CYPHER_MODEL, temperature=0),
+    qa_llm=ChatOpenAI(model=HOSPITAL_QA_MODEL, temperature=0),
     graph=graph,
     verbose=True,
     qa_prompt=qa_generation_prompt,

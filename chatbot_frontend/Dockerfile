@@ -1,21 +1,27 @@
-# Use Python 3.11 as base image
+# ==========================================
+# STAGE 1: Builder
+# ==========================================
+FROM python:3.11-slim AS builder
+
+WORKDIR /build
+
+COPY pyproject.toml .
+RUN pip install --no-cache-dir --prefix=/install .
+
+# ==========================================
+# STAGE 2: Final Image
+# ==========================================
 FROM python:3.11-slim
 
-# Set working directory
 WORKDIR /app
 
-# Copy project files
-COPY pyproject.toml .
+COPY --from=builder /install /usr/local
 COPY src/ ./src/
 
-# Install dependencies
-RUN pip install --no-cache-dir .
-
-# Expose port for Streamlit
 EXPOSE 8501
 
-# Set Python specific environment
 ENV PYTHONPATH=/app
 ENV PYTHONUNBUFFERED=1
 
-CMD ["streamlit", "run", "src/main.py", "--server.address", "0.0.0.0", "--server.port", "8501"]
+# Streamlit production flags
+CMD ["streamlit", "run", "src/main.py", "--server.address", "0.0.0.0", "--server.port", "8501", "--server.headless", "true"]

@@ -1,5 +1,5 @@
 import os
-from langchain_google_genai import ChatGoogleGenerativeAI
+from langchain_openai import ChatOpenAI
 from langchain.agents import (
     create_tool_calling_agent,
     Tool,
@@ -58,9 +58,9 @@ tools = [
     ),
 ]
 
-chat_model = ChatGoogleGenerativeAI(
+chat_model = ChatOpenAI(
     model=HOSPITAL_AGENT_MODEL,
-    temperature=0.7,
+    temperature=0,
 )
 
 hospital_rag_agent = create_tool_calling_agent(

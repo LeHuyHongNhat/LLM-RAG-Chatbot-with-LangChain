@@ -25,10 +25,11 @@ WORKDIR /app
 COPY --from=builder /install /usr/local
 COPY src/ ./src/
 
+# Render cung cấp biến PORT tự động, mặc định là 10000 nếu không có
 EXPOSE 8000
 
 ENV PYTHONPATH=/app
 ENV PYTHONUNBUFFERED=1
 
-# Sử dụng Gunicorn cho production với 2-4 workers
-CMD ["gunicorn", "-w", "4", "-k", "uvicorn.workers.UvicornWorker", "src.main:app", "--bind", "0.0.0.0:8000"]
+# Giảm xuống 1 worker để chạy vừa vặn trong 512MB RAM của Render Free Tier
+CMD ["gunicorn", "-w", "1", "-k", "uvicorn.workers.UvicornWorker", "src.main:app", "--bind", "0.0.0.0:8000"]
